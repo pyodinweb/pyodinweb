@@ -80,10 +80,58 @@ async function loadSelectedPartitions() {
 }
 
 /**
+ * Show disclaimer modal on first visit
+ */
+function showDisclaimer() {
+    const hasAccepted = localStorage.getItem('pyodin-disclaimer-accepted');
+    if (!hasAccepted) {
+        document.getElementById('disclaimer-modal').style.display = 'flex';
+    }
+}
+
+/**
+ * Accept disclaimer and hide modal
+ */
+function acceptDisclaimer() {
+    localStorage.setItem('pyodin-disclaimer-accepted', 'true');
+    document.getElementById('disclaimer-modal').style.display = 'none';
+    log('Disclaimer accepted', 'info');
+}
+
+/**
+ * Copy Bitcoin address to clipboard
+ */
+function copyBitcoinAddress() {
+    const address = '3CSk7Ci4hFuPu24tdtkw5BE92SwRjaVvBs';
+    
+    navigator.clipboard.writeText(address).then(() => {
+        showSuccess('Bitcoin address copied to clipboard!');
+        log('Bitcoin address copied: ' + address, 'info');
+    }).catch(err => {
+        log('Failed to copy address: ' + err, 'error');
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = address;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showSuccess('Bitcoin address copied to clipboard!');
+        } catch (err) {
+            showError('Failed to copy address. Please copy manually.');
+        }
+        document.body.removeChild(textArea);
+    });
+}
+
+/**
  * Initialize application
  */
 window.addEventListener('DOMContentLoaded', () => {
     log('PyOdin Web initialized', 'success');
+    
+    // Show disclaimer on first visit
+    showDisclaimer();
     
     // Check WebUSB support
     if (!checkWebUSBSupport()) {
