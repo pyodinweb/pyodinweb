@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google Analytics with Consent Mode (Consent Mode v2 defaults set before loading gtag.js) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyOdin Web - Samsung Firmware Flasher</title>
+    
+    <!-- Google Analytics with Consent Mode v2 -->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);} 
-        // Set default consent to 'denied' before GA loads (Consent Mode v2)
         gtag('consent', 'default', {
             'analytics_storage': 'denied',
             'ad_storage': 'denied',
@@ -18,7 +21,6 @@
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KM0JNZ7JBC"></script>
     <script>
-        // Initialize gtag after the library has been loaded
         gtag('js', new Date());
         gtag('config', 'G-KM0JNZ7JBC', {
             'anonymize_ip': true,
@@ -26,24 +28,20 @@
             'allow_ad_personalization_signals': false
         });
     </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1263613699773711"
          crossorigin="anonymous"></script>
-     
+
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🔥%3C/text%3E%3C/svg%3E">
-    <link rel="alternate icon" type="image/png" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🔥%3C/text%3E%3C/svg%3E">
-    <link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🔥%3C/text%3E%3C/svg%3E">
-    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+
     <!-- SEO Meta Tags -->
     <meta name="description" content="PyOdin Web - Advanced browser-based Samsung firmware flashing tool. Free Odin3 and Odin4 alternative using WebUSB technology. Flash Samsung Galaxy firmware directly from your browser without installing desktop software.">
     <meta name="keywords" content="Samsung, Odin3, Odin4, Flashing, Samsung firmware, Odin alternative, WebUSB flasher, Samsung Galaxy flash, browser firmware tool, PyOdin, Samsung Odin web, firmware flashing online, Samsung developer tool, Galaxy firmware update, flash Samsung online, Odin web version">
     <meta name="author" content="PyOdin Development Team">
     <meta name="robots" content="index, follow">
-    
+
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="PyOdin Web - Samsung Firmware Flasher | Free Odin3/Odin4 Alternative">
     <meta property="og:description" content="Browser-based Samsung firmware flashing tool using WebUSB. Free alternative to Odin3 and Odin4. Flash Samsung Galaxy firmware directly from your browser.">
@@ -51,14 +49,13 @@
     <meta property="og:url" content="https://pyodin.web/">
     <meta property="og:site_name" content="PyOdin Web">
     <meta property="og:image" content="https://pyodin.web/og-image.png">
-    
+
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="PyOdin Web - Samsung Firmware Flasher">
     <meta name="twitter:description" content="Free Odin3/Odin4 alternative. Flash Samsung firmware directly in your browser using WebUSB technology.">
     <meta name="twitter:image" content="https://pyodin.web/twitter-card.png">
     
-    <title>PyOdin Web - Samsung Firmware Flasher | Free Odin3/Odin4 Alternative</title>
     <link rel="manifest" href="manifest.json">
     <style>
         :root {
@@ -410,6 +407,171 @@
             100% { transform: rotate(360deg); }
         }
 
+        .partition-input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            background: white;
+            transition: var(--transition);
+        }
+
+        .partition-input:hover {
+            border-color: var(--primary-color);
+        }
+
+        .partition-input input[type="file"] {
+            cursor: pointer;
+        }
+
+        .partition-input input[type="file"]::-webkit-file-upload-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .partition-input input[type="file"]::-webkit-file-upload-button:hover {
+            background: #0056b3;
+        }
+
+        .partition-file-name {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.85em;
+            color: #666;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+            min-width: 0;
+        }
+        
+        .partition-input {
+            min-width: 0;
+        }
+
+        .partition-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .partition-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .partition-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Modal/Disclaimer Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content h2 {
+            color: var(--danger-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-content p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .modal-content ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        .modal-content li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        /* Donation Section */
+        .donation-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            margin-top: 40px;
+            text-align: center;
+            border-radius: var(--border-radius);
+        }
+
+        .donation-section h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .donation-section p {
+            margin: 10px 0;
+            opacity: 0.95;
+        }
+
+        .bitcoin-address {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin: 20px auto;
+            max-width: 500px;
+            word-break: break-all;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .bitcoin-address:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
+        }
+
         .button-group {
             display: flex;
             gap: 15px;
@@ -445,94 +607,27 @@
             font-size: 0.9em;
         }
 
-        /* Partition Selection Styles */
-        .partition-input {
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: var(--border-radius);
-            background: #fafafa;
-            transition: var(--transition);
-        }
-
-        .partition-input:hover {
-            border-color: var(--primary-color);
-        }
-
-        .partition-input input[type="file"] {
-            cursor: pointer;
-        }
-
-        .partition-input input[type="file"]::-webkit-file-upload-button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            background: var(--primary-color);
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .partition-input input[type="file"]::-webkit-file-upload-button:hover {
-            background: #0056b3;
-        }
-
-        .partition-file-name {
-            display: block;
-            margin-top: 8px;
-            font-size: 0.9em;
-            color: var(--secondary-color);
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .partition-input {
-            min-width: 0;
-        }
-
-        .partition-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 1200px) {
-            .partition-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            .partition-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .hidden {
             display: none !important;
         }
 
         /* Cookie Consent Banner */
-        .cookie-consent {
+        #cookieConsent {
             position: fixed;
-            bottom: 0;
+            bottom: -100%;
             left: 0;
             right: 0;
             background: rgba(52, 58, 64, 0.98);
+            backdrop-filter: blur(10px);
             color: white;
             padding: 20px;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
-            z-index: 9999;
-            transform: translateY(100%);
-            transition: transform 0.4s ease;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+            z-index: 10000;
+            transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        .cookie-consent.show {
-            transform: translateY(0);
+        #cookieConsent.show {
+            bottom: 0;
         }
 
         .cookie-content {
@@ -540,6 +635,7 @@
             margin: 0 auto;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 20px;
             flex-wrap: wrap;
         }
@@ -551,13 +647,14 @@
 
         .cookie-text p {
             margin: 0;
-            font-size: 14px;
-            line-height: 1.6;
+            font-size: 0.95em;
+            line-height: 1.5;
         }
 
         .cookie-text a {
-            color: #81c4ff;
+            color: #4dabf7;
             text-decoration: underline;
+            cursor: pointer;
         }
 
         .cookie-buttons {
@@ -567,33 +664,36 @@
         }
 
         .cookie-btn {
-            padding: 10px 20px;
+            padding: 10px 24px;
             border: none;
             border-radius: 6px;
             font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 600;
+            white-space: nowrap;
         }
 
-        .cookie-btn-accept {
+        .cookie-btn.accept {
             background: #28a745;
             color: white;
         }
 
-        .cookie-btn-accept:hover {
+        .cookie-btn.accept:hover {
             background: #218838;
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
         }
 
-        .cookie-btn-decline {
+        .cookie-btn.decline {
             background: transparent;
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
-        .cookie-btn-decline:hover {
+        .cookie-btn.decline:hover {
             background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
         @media (max-width: 768px) {
@@ -604,7 +704,6 @@
 
             .cookie-buttons {
                 width: 100%;
-                justify-content: stretch;
             }
 
             .cookie-btn {
@@ -614,23 +713,6 @@
     </style>
 </head>
 <body>
-    <!-- Cookie Consent Banner -->
-    <div class="cookie-consent" id="cookieConsent">
-        <div class="cookie-content">
-            <div class="cookie-text">
-                <p>
-                    We use cookies to improve your experience, analyze site usage, and display ads. 
-                    By clicking "Accept", you consent to our use of cookies and personalized advertising. 
-                    <a href="#" onclick="showPrivacyPolicy(); return false;">Privacy Policy</a>
-                </p>
-            </div>
-            <div class="cookie-buttons">
-                <button class="cookie-btn cookie-btn-accept" onclick="acceptCookies()">Accept</button>
-                <button class="cookie-btn cookie-btn-decline" onclick="declineCookies()">Decline</button>
-            </div>
-        </div>
-    </div>
-
     <div class="container">
         <div class="header">
             <h1>🔥 PyOdin Web</h1>
@@ -677,11 +759,11 @@
                         <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--primary-color);">
                             BL (Bootloader)
                         </label>
-                        <input type="file" id="file-bl" accept=".tar,.tar.md5" onchange="handlePartitionSelect('BL', event)"
+                        <input type="file" id="file-bl" accept=".tar,.tar.md5" onchange="handlePartitionSelect('BL', event)" 
                                style="display: block; width: 100%;">
                         <span id="file-bl-name" class="partition-file-name" title="">No file selected</span>
                     </div>
-
+                    
                     <!-- AP -->
                     <div class="partition-input">
                         <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--primary-color);">
@@ -691,7 +773,7 @@
                                style="display: block; width: 100%;">
                         <span id="file-ap-name" class="partition-file-name" title="">No file selected</span>
                     </div>
-
+                    
                     <!-- CP -->
                     <div class="partition-input">
                         <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--primary-color);">
@@ -701,7 +783,7 @@
                                style="display: block; width: 100%;">
                         <span id="file-cp-name" class="partition-file-name" title="">No file selected</span>
                     </div>
-
+                    
                     <!-- CSC -->
                     <div class="partition-input">
                         <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--primary-color);">
@@ -712,12 +794,18 @@
                         <span id="file-csc-name" class="partition-file-name" title="">No file selected</span>
                     </div>
                 </div>
+                
+                <button class="btn btn-primary" onclick="loadSelectedPartitions()" id="load-firmware-btn" style="width: 100%;">
+                    Load Selected Files
+                </button>
 
                 <div id="firmware-info" class="hidden">
                     <div class="file-info">
                         <h4>Firmware Information</h4>
-                        <p><strong>Files Selected:</strong> <span id="firmware-count">0</span></p>
-                        <p><strong>Total Size:</strong> <span id="firmware-size">0 MB</span></p>
+                        <p><strong>File:</strong> <span id="firmware-name"></span></p>
+                        <p><strong>Size:</strong> <span id="firmware-size"></span></p>
+                        <p><strong>Type:</strong> <span id="firmware-type"></span></p>
+                        <p><strong>MD5:</strong> <span id="firmware-md5">Calculating...</span></p>
                     </div>
                     <div id="firmware-items-container" class="hidden">
                         <h4 style="margin-top: 15px; margin-bottom: 10px;">Firmware Contents:</h4>
@@ -785,29 +873,63 @@
             </div>
         </div>
 
-        <!-- Donation Section -->
-        <div class="main-card" style="margin-top: 20px; text-align: center; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
-            <h2 style="margin-bottom: 15px;">💝 Support This Project</h2>
-            <p style="font-size: 1.1em; margin-bottom: 20px;">
-                If PyOdin Web has been helpful to you, please consider supporting us with a Bitcoin donation!
-            </p>
-            <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px; margin: 20px auto; max-width: 600px;">
-                <p style="font-size: 0.9em; margin-bottom: 10px; opacity: 0.9;">Bitcoin Address:</p>
-                <code style="background: rgba(0,0,0,0.3); padding: 12px 20px; border-radius: 5px; font-size: 1.1em; display: inline-block; word-break: break-all; user-select: all;">
-                    3CSk7Ci4hFuPu24tdtkw5BE92SwRjaVvBs
-                </code>
+        <div class="donation-section">
+            <h3>💝 Support This Project</h3>
+            <p>If PyOdin Web has been helpful to you, please consider supporting us with a Bitcoin donation!</p>
+            
+            <p style="margin-top: 20px; font-weight: 600;">Bitcoin Address:</p>
+            <div class="bitcoin-address" onclick="copyBitcoinAddress()" title="Click to copy">
+                3CSk7Ci4hFuPu24tdtkw5BE92SwRjaVvBs
             </div>
-            <p style="font-size: 0.95em; opacity: 0.9;">
-                Your donations help keep this project actively maintained. Thank you! 🙏
-            </p>
+            
+            <p style="font-size: 0.9em; opacity: 0.9;">Your donations help keep this project actively maintained. Thank you! 🙏</p>
         </div>
 
         <div class="footer">
             <p>PyOdin Web - Made with ❤️ by the PyOdin Developers</p>
-            <p><a href="https://github.com/pyodinweb/pyodinweb" target="_blank">GitHub</a> | 
+            <p><a href="https://github.com/pyodin/pyodin" target="_blank">GitHub</a> | 
                <a href="#" onclick="alert('See README for documentation'); return false;">Documentation</a> | 
-               <a href="#" onclick="showPrivacyPolicy(); return false;">Privacy Policy</a> | 
                Use at your own risk</p>
+        </div>
+    </div>
+
+    <!-- Disclaimer Modal -->
+    <div id="disclaimer-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>⚠️ Important Disclaimer</h2>
+            
+            <p><strong>By using PyOdin Web, you acknowledge and agree to the following:</strong></p>
+            
+            <ul>
+                <li>Flashing firmware can <strong>permanently damage or brick</strong> your device if done incorrectly.</li>
+                <li>You assume <strong>all responsibility and risk</strong> for using this software.</li>
+                <li>The developers are <strong>NOT LIABLE</strong> for any damage to your device, computer, data loss, or any other issues that may arise.</li>
+                <li>This tool is provided "AS IS" without warranty of any kind.</li>
+                <li>Always ensure you are using the <strong>correct firmware</strong> for your exact device model.</li>
+                <li>Maintain a <strong>backup</strong> of important data before flashing.</li>
+            </ul>
+            
+            <p style="margin-top: 20px;"><strong>Please proceed only if you understand and accept these risks.</strong></p>
+            
+            <button class="btn btn-danger" onclick="acceptDisclaimer()" style="width: 100%; margin-top: 20px; padding: 15px; font-size: 1.1em;">
+                I Understand and Accept the Risks
+            </button>
+        </div>
+    </div>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookieConsent">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <p>
+                    🍪 We use cookies for analytics and ads. All firmware data stays in your browser. 
+                    <a onclick="showPrivacyPolicy()">Privacy Policy</a>
+                </p>
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn accept" onclick="acceptCookies()">Accept</button>
+                <button class="cookie-btn decline" onclick="declineCookies()">Decline</button>
+            </div>
         </div>
     </div>
 
@@ -836,7 +958,6 @@
 
     <!-- Cookie Consent Script -->
     <script>
-        // Privacy Policy
         function showPrivacyPolicy() {
             const policy = `PRIVACY POLICY
 
@@ -857,8 +978,6 @@ For privacy concerns, visit our GitHub repository.`;
             alert(policy);
         }
 
-        // Cookie consent functionality following Google best practices
-        
         function setCookie(name, value, days) {
             const d = new Date();
             d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -883,35 +1002,22 @@ For privacy concerns, visit our GitHub repository.`;
 
         function acceptCookies() {
             setCookie('cookieConsent', 'accepted', 365);
-            
-            // Update consent for analytics and ads (AdSense enabled) - IMMEDIATE UPDATE
             gtag('consent', 'update', {
                 'analytics_storage': 'granted',
-                'ad_storage': 'granted', // Enable ads (required for AdSense)
-                'ad_user_data': 'granted', // Enable ad user data
-                'ad_personalization': 'granted', // Enable personalized ads
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted',
                 'personalization_storage': 'granted'
             });
-            
-            // Trigger a page_view event to immediately activate analytics
-            gtag('event', 'page_view', {
-                'send_to': 'G-KM0JNZ7JBC'
-            });
-            
-            // Request ads refresh if AdSense is loaded
+            gtag('event', 'page_view', { 'send_to': 'G-KM0JNZ7JBC' });
             if (window.adsbygoogle && window.adsbygoogle.loaded) {
                 console.log('AdSense ready - Ads will display on next ad slot');
             }
-            
             hideCookieBanner();
-            console.log('✅ Cookies accepted - Analytics and ads enabled immediately (no refresh needed)');
+            console.log('✅ Cookies accepted - Analytics and ads enabled immediately');
         }
 
         function declineCookies() {
-            // Don't save any cookie on decline - user will be asked again on next visit
-            // This ensures we ask for consent on every page load until user accepts
-            
-            // Ensure consent remains denied (no ads, no analytics) - IMMEDIATE UPDATE
             gtag('consent', 'update', {
                 'analytics_storage': 'denied',
                 'ad_storage': 'denied',
@@ -919,29 +1025,21 @@ For privacy concerns, visit our GitHub repository.`;
                 'ad_personalization': 'denied',
                 'personalization_storage': 'denied'
             });
-            
-            // Clear any existing analytics cookies immediately
             clearAnalyticsCookies();
-            
-            // Also clear any existing consent cookie
             deleteCookie('cookieConsent');
-            
             hideCookieBanner();
             console.log('❌ Cookies declined - You will be asked again on next visit');
         }
 
         function clearAnalyticsCookies() {
-            // Clear Google Analytics cookies if they exist
             const gaCookies = ['_ga', '_gat', '_gid', '_gat_gtag'];
             gaCookies.forEach(cookie => {
                 deleteCookie(cookie);
-                // Also try to delete with domain prefix
                 document.cookie = cookie + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
             });
         }
 
         function loadAnalytics() {
-            // GA is already loaded in head, just update consent dynamically
             const consent = getCookie('cookieConsent');
             if (consent === 'accepted') {
                 gtag('consent', 'update', {
@@ -951,11 +1049,8 @@ For privacy concerns, visit our GitHub repository.`;
                     'ad_personalization': 'granted',
                     'personalization_storage': 'granted'
                 });
-                // Send page_view event to activate tracking immediately
-                gtag('event', 'page_view', {
-                    'send_to': 'G-KM0JNZ7JBC'
-                });
-                console.log('✅ Google Analytics and AdSense enabled (from previous consent)');
+                gtag('event', 'page_view', { 'send_to': 'G-KM0JNZ7JBC' });
+                console.log('✅ Google Analytics and AdSense enabled');
             }
         }
 
@@ -966,21 +1061,15 @@ For privacy concerns, visit our GitHub repository.`;
 
         function showCookieBanner() {
             const banner = document.getElementById('cookieConsent');
-            setTimeout(() => {
-                banner.classList.add('show');
-            }, 500); // Small delay before showing
+            setTimeout(() => { banner.classList.add('show'); }, 500);
         }
 
-        // Check if user has already made a choice - Initialize consent state dynamically
         window.addEventListener('DOMContentLoaded', () => {
             const consent = getCookie('cookieConsent');
-            
             if (!consent) {
-                // No saved consent - show banner (first visit or user declined previously)
                 showCookieBanner();
-                console.log('ℹ️ Cookie consent banner displayed - Waiting for user decision');
+                console.log('ℹ️ Cookie consent banner displayed');
             } else if (consent === 'accepted') {
-                // User previously accepted - update consent dynamically and load analytics immediately
                 gtag('consent', 'update', {
                     'analytics_storage': 'granted',
                     'ad_storage': 'granted',
@@ -989,7 +1078,7 @@ For privacy concerns, visit our GitHub repository.`;
                     'personalization_storage': 'granted'
                 });
                 loadAnalytics();
-                console.log('✅ Returning user - Consent already accepted, analytics active');
+                console.log('✅ Returning user - Consent already accepted');
             }
         });
     </script>
