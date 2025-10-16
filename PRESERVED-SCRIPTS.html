@@ -1,0 +1,187 @@
+<!-- 
+=============================================================================
+PYODIN WEB - SEO, ANALYTICS & ADSENSE SCRIPTS
+Preserved from original implementation
+To be integrated into new codebase
+=============================================================================
+-->
+
+<!-- ============ PLACE IN <HEAD> SECTION ============ -->
+
+<!-- Google Analytics with Consent Mode v2 -->
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'functionality_storage': 'granted',
+        'personalization_storage': 'denied',
+        'security_storage': 'granted'
+    });
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KM0JNZ7JBC"></script>
+<script>
+    gtag('js', new Date());
+    gtag('config', 'G-KM0JNZ7JBC', {
+        'anonymize_ip': true,
+        'allow_google_signals': false,
+        'allow_ad_personalization_signals': false
+    });
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1263613699773711"
+     crossorigin="anonymous"></script>
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="PyOdin Web - Advanced browser-based Samsung firmware flashing tool. Free Odin3 and Odin4 alternative using WebUSB technology. Flash Samsung Galaxy firmware directly from your browser without installing desktop software.">
+<meta name="keywords" content="Samsung, Odin3, Odin4, Flashing, Samsung firmware, Odin alternative, WebUSB flasher, Samsung Galaxy flash, browser firmware tool, PyOdin, Samsung Odin web, firmware flashing online, Samsung developer tool, Galaxy firmware update, flash Samsung online, Odin web version">
+<meta name="author" content="PyOdin Development Team">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph Meta Tags -->
+<meta property="og:title" content="PyOdin Web - Samsung Firmware Flasher | Free Odin3/Odin4 Alternative">
+<meta property="og:description" content="Browser-based Samsung firmware flashing tool using WebUSB. Free alternative to Odin3 and Odin4. Flash Samsung Galaxy firmware directly from your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pyodin.web/">
+<meta property="og:site_name" content="PyOdin Web">
+<meta property="og:image" content="https://pyodin.web/og-image.png">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PyOdin Web - Samsung Firmware Flasher">
+<meta name="twitter:description" content="Free Odin3/Odin4 alternative. Flash Samsung firmware directly in your browser using WebUSB technology.">
+<meta name="twitter:image" content="https://pyodin.web/twitter-card.png">
+
+
+<!-- ============ PLACE BEFORE </BODY> TAG ============ -->
+
+<!-- Cookie Consent Script -->
+<script>
+    function showPrivacyPolicy() {
+        const policy = `PRIVACY POLICY
+
+Last Updated: October 16, 2025
+
+DATA PRIVACY
+All user data and files remain in your browser and never leave your device. We do not upload, transmit, or store any of your files or personal data on our servers.
+
+COOKIES AND ADVERTISING
+We use cookies for essential functionality, analytics, and displaying personalized advertising through Google AdSense. You can decline non-essential cookies, which will disable ads and analytics.
+
+YOUR RIGHTS (GDPR/CCPA)
+You have the right to decline cookies and request information about or deletion of any data collected.
+
+CONTACT
+For privacy concerns, visit our GitHub repository.`;
+        
+        alert(policy);
+    }
+
+    function setCookie(name, value, days) {
+        const d = new Date();
+        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + d.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Strict";
+    }
+
+    function getCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function deleteCookie(name) {
+        document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+
+    function acceptCookies() {
+        setCookie('cookieConsent', 'accepted', 365);
+        gtag('consent', 'update', {
+            'analytics_storage': 'granted',
+            'ad_storage': 'granted',
+            'ad_user_data': 'granted',
+            'ad_personalization': 'granted',
+            'personalization_storage': 'granted'
+        });
+        gtag('event', 'page_view', { 'send_to': 'G-KM0JNZ7JBC' });
+        if (window.adsbygoogle && window.adsbygoogle.loaded) {
+            console.log('AdSense ready - Ads will display on next ad slot');
+        }
+        hideCookieBanner();
+        console.log('✅ Cookies accepted - Analytics and ads enabled immediately');
+    }
+
+    function declineCookies() {
+        gtag('consent', 'update', {
+            'analytics_storage': 'denied',
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'personalization_storage': 'denied'
+        });
+        clearAnalyticsCookies();
+        deleteCookie('cookieConsent');
+        hideCookieBanner();
+        console.log('❌ Cookies declined - You will be asked again on next visit');
+    }
+
+    function clearAnalyticsCookies() {
+        const gaCookies = ['_ga', '_gat', '_gid', '_gat_gtag'];
+        gaCookies.forEach(cookie => {
+            deleteCookie(cookie);
+            document.cookie = cookie + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
+        });
+    }
+
+    function loadAnalytics() {
+        const consent = getCookie('cookieConsent');
+        if (consent === 'accepted') {
+            gtag('consent', 'update', {
+                'analytics_storage': 'granted',
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted',
+                'personalization_storage': 'granted'
+            });
+            gtag('event', 'page_view', { 'send_to': 'G-KM0JNZ7JBC' });
+            console.log('✅ Google Analytics and AdSense enabled');
+        }
+    }
+
+    function hideCookieBanner() {
+        const banner = document.getElementById('cookieConsent');
+        banner.classList.remove('show');
+    }
+
+    function showCookieBanner() {
+        const banner = document.getElementById('cookieConsent');
+        setTimeout(() => { banner.classList.add('show'); }, 500);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const consent = getCookie('cookieConsent');
+        if (!consent) {
+            showCookieBanner();
+            console.log('ℹ️ Cookie consent banner displayed');
+        } else if (consent === 'accepted') {
+            gtag('consent', 'update', {
+                'analytics_storage': 'granted',
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted',
+                'personalization_storage': 'granted'
+            });
+            loadAnalytics();
+            console.log('✅ Returning user - Consent already accepted');
+        }
+    });
+</script>
