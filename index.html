@@ -1,9 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Analytics with Consent Mode (Consent Mode v2 defaults set before loading gtag.js) -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);} 
+        // Set default consent to 'denied' before GA loads (Consent Mode v2)
+        gtag('consent', 'default', {
+            'analytics_storage': 'denied',
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'functionality_storage': 'granted',
+            'personalization_storage': 'denied',
+            'security_storage': 'granted'
+        });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KM0JNZ7JBC"></script>
+    <script>
+        // Initialize gtag after the library has been loaded
+        gtag('js', new Date());
+        gtag('config', 'G-KM0JNZ7JBC', {
+            'anonymize_ip': true,
+            'allow_google_signals': false,
+            'allow_ad_personalization_signals': false
+        });
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyOdin Web - Samsung Firmware Flasher</title>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1263613699773711"
+         crossorigin="anonymous"></script>
+     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🔥%3C/text%3E%3C/svg%3E">
+    <link rel="alternate icon" type="image/png" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🔥%3C/text%3E%3C/svg%3E">
+    <link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🔥%3C/text%3E%3C/svg%3E">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="PyOdin Web - Advanced browser-based Samsung firmware flashing tool. Free Odin3 and Odin4 alternative using WebUSB technology. Flash Samsung Galaxy firmware directly from your browser without installing desktop software.">
+    <meta name="keywords" content="Samsung, Odin3, Odin4, Flashing, Samsung firmware, Odin alternative, WebUSB flasher, Samsung Galaxy flash, browser firmware tool, PyOdin, Samsung Odin web, firmware flashing online, Samsung developer tool, Galaxy firmware update, flash Samsung online, Odin web version">
+    <meta name="author" content="PyOdin Development Team">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="PyOdin Web - Samsung Firmware Flasher | Free Odin3/Odin4 Alternative">
+    <meta property="og:description" content="Browser-based Samsung firmware flashing tool using WebUSB. Free alternative to Odin3 and Odin4. Flash Samsung Galaxy firmware directly from your browser.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pyodin.web/">
+    <meta property="og:site_name" content="PyOdin Web">
+    <meta property="og:image" content="https://pyodin.web/og-image.png">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PyOdin Web - Samsung Firmware Flasher">
+    <meta name="twitter:description" content="Free Odin3/Odin4 alternative. Flash Samsung firmware directly in your browser using WebUSB technology.">
+    <meta name="twitter:image" content="https://pyodin.web/twitter-card.png">
+    
+    <title>PyOdin Web - Samsung Firmware Flasher | Free Odin3/Odin4 Alternative</title>
     <link rel="manifest" href="manifest.json">
     <style>
         :root {
@@ -390,12 +445,192 @@
             font-size: 0.9em;
         }
 
+        /* Partition Selection Styles */
+        .partition-input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            background: #fafafa;
+            transition: var(--transition);
+        }
+
+        .partition-input:hover {
+            border-color: var(--primary-color);
+        }
+
+        .partition-input input[type="file"] {
+            cursor: pointer;
+        }
+
+        .partition-input input[type="file"]::-webkit-file-upload-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .partition-input input[type="file"]::-webkit-file-upload-button:hover {
+            background: #0056b3;
+        }
+
+        .partition-file-name {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: var(--secondary-color);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .partition-input {
+            min-width: 0;
+        }
+
+        .partition-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .partition-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .partition-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .hidden {
             display: none !important;
+        }
+
+        /* Cookie Consent Banner */
+        .cookie-consent {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(52, 58, 64, 0.98);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .cookie-consent.show {
+            transform: translateY(0);
+        }
+
+        .cookie-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cookie-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .cookie-text p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .cookie-text a {
+            color: #81c4ff;
+            text-decoration: underline;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .cookie-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .cookie-btn-accept {
+            background: #28a745;
+            color: white;
+        }
+
+        .cookie-btn-accept:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .cookie-btn-decline {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .cookie-btn-decline:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .cookie-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cookie-buttons {
+                width: 100%;
+                justify-content: stretch;
+            }
+
+            .cookie-btn {
+                flex: 1;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-consent" id="cookieConsent">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <p>
+                    We use cookies to improve your experience, analyze site usage, and display ads. 
+                    By clicking "Accept", you consent to our use of cookies and personalized advertising. 
+                    <a href="#" onclick="showPrivacyPolicy(); return false;">Privacy Policy</a>
+                </p>
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn cookie-btn-accept" onclick="acceptCookies()">Accept</button>
+                <button class="cookie-btn cookie-btn-decline" onclick="declineCookies()">Decline</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>🔥 PyOdin Web</h1>
@@ -436,24 +671,53 @@
             <div class="section">
                 <h2 class="section-title">Firmware Selection</h2>
                 
-                <div class="file-upload" id="file-upload-area" onclick="document.getElementById('firmware-file').click()">
-                    <input type="file" id="firmware-file" accept=".tar,.tar.md5,.tar.gz,.bin,.img" onchange="handleFirmwareSelect(event)" multiple="false">
-                    <div>
-                        <h3>📁 Select Firmware File</h3>
-                        <p>Supports: TAR, TAR.MD5, TAR.GZ, BIN, IMG</p>
-                        <p style="margin-top: 10px; color: var(--secondary-color); font-size: 0.9em;">
-                            Drag and drop or click to browse
-                        </p>
+                <div class="partition-grid">
+                    <!-- BL -->
+                    <div class="partition-input">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--primary-color);">
+                            BL (Bootloader)
+                        </label>
+                        <input type="file" id="file-bl" accept=".tar,.tar.md5" onchange="handlePartitionSelect('BL', event)"
+                               style="display: block; width: 100%;">
+                        <span id="file-bl-name" class="partition-file-name" title="">No file selected</span>
+                    </div>
+
+                    <!-- AP -->
+                    <div class="partition-input">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--primary-color);">
+                            AP (System)
+                        </label>
+                        <input type="file" id="file-ap" accept=".tar,.tar.md5" onchange="handlePartitionSelect('AP', event)"
+                               style="display: block; width: 100%;">
+                        <span id="file-ap-name" class="partition-file-name" title="">No file selected</span>
+                    </div>
+
+                    <!-- CP -->
+                    <div class="partition-input">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--primary-color);">
+                            CP (Modem)
+                        </label>
+                        <input type="file" id="file-cp" accept=".tar,.tar.md5" onchange="handlePartitionSelect('CP', event)"
+                               style="display: block; width: 100%;">
+                        <span id="file-cp-name" class="partition-file-name" title="">No file selected</span>
+                    </div>
+
+                    <!-- CSC -->
+                    <div class="partition-input">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--primary-color);">
+                            CSC (Region/Carrier)
+                        </label>
+                        <input type="file" id="file-csc" accept=".tar,.tar.md5" onchange="handlePartitionSelect('CSC', event)"
+                               style="display: block; width: 100%;">
+                        <span id="file-csc-name" class="partition-file-name" title="">No file selected</span>
                     </div>
                 </div>
 
                 <div id="firmware-info" class="hidden">
                     <div class="file-info">
                         <h4>Firmware Information</h4>
-                        <p><strong>File:</strong> <span id="firmware-name"></span></p>
-                        <p><strong>Size:</strong> <span id="firmware-size"></span></p>
-                        <p><strong>Type:</strong> <span id="firmware-type"></span></p>
-                        <p><strong>MD5:</strong> <span id="firmware-md5">Calculating...</span></p>
+                        <p><strong>Files Selected:</strong> <span id="firmware-count">0</span></p>
+                        <p><strong>Total Size:</strong> <span id="firmware-size">0 MB</span></p>
                     </div>
                     <div id="firmware-items-container" class="hidden">
                         <h4 style="margin-top: 15px; margin-bottom: 10px;">Firmware Contents:</h4>
@@ -521,10 +785,28 @@
             </div>
         </div>
 
+        <!-- Donation Section -->
+        <div class="main-card" style="margin-top: 20px; text-align: center; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+            <h2 style="margin-bottom: 15px;">💝 Support This Project</h2>
+            <p style="font-size: 1.1em; margin-bottom: 20px;">
+                If PyOdin Web has been helpful to you, please consider supporting us with a Bitcoin donation!
+            </p>
+            <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px; margin: 20px auto; max-width: 600px;">
+                <p style="font-size: 0.9em; margin-bottom: 10px; opacity: 0.9;">Bitcoin Address:</p>
+                <code style="background: rgba(0,0,0,0.3); padding: 12px 20px; border-radius: 5px; font-size: 1.1em; display: inline-block; word-break: break-all; user-select: all;">
+                    3CSk7Ci4hFuPu24tdtkw5BE92SwRjaVvBs
+                </code>
+            </div>
+            <p style="font-size: 0.95em; opacity: 0.9;">
+                Your donations help keep this project actively maintained. Thank you! 🙏
+            </p>
+        </div>
+
         <div class="footer">
             <p>PyOdin Web - Made with ❤️ by the PyOdin Developers</p>
-            <p><a href="https://github.com/pyodin/pyodin" target="_blank">GitHub</a> | 
+            <p><a href="https://github.com/pyodinweb/pyodinweb" target="_blank">GitHub</a> | 
                <a href="#" onclick="alert('See README for documentation'); return false;">Documentation</a> | 
+               <a href="#" onclick="showPrivacyPolicy(); return false;">Privacy Policy</a> | 
                Use at your own risk</p>
         </div>
     </div>
@@ -538,6 +820,8 @@
     <script src="lz4.min.js"></script>
     <script src="lz4-wrapper.js"></script>
     <script src="js/lz4-streaming.js"></script>
+    <script src="js/nested-tar-parser.js"></script>
+    <script src="js/zip-parser.js"></script>
     
     <!-- Core JavaScript Modules -->
     <script src="js/constants.js"></script>
@@ -549,6 +833,166 @@
     <script src="js/download-engine.js"></script>
     <script src="js/flasher.js"></script>
     <script src="js/app.js"></script>
+
+    <!-- Cookie Consent Script -->
+    <script>
+        // Privacy Policy
+        function showPrivacyPolicy() {
+            const policy = `PRIVACY POLICY
+
+Last Updated: October 16, 2025
+
+DATA PRIVACY
+All user data and files remain in your browser and never leave your device. We do not upload, transmit, or store any of your files or personal data on our servers.
+
+COOKIES AND ADVERTISING
+We use cookies for essential functionality, analytics, and displaying personalized advertising through Google AdSense. You can decline non-essential cookies, which will disable ads and analytics.
+
+YOUR RIGHTS (GDPR/CCPA)
+You have the right to decline cookies and request information about or deletion of any data collected.
+
+CONTACT
+For privacy concerns, visit our GitHub repository.`;
+            
+            alert(policy);
+        }
+
+        // Cookie consent functionality following Google best practices
+        
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Strict";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function deleteCookie(name) {
+            document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+
+        function acceptCookies() {
+            setCookie('cookieConsent', 'accepted', 365);
+            
+            // Update consent for analytics and ads (AdSense enabled) - IMMEDIATE UPDATE
+            gtag('consent', 'update', {
+                'analytics_storage': 'granted',
+                'ad_storage': 'granted', // Enable ads (required for AdSense)
+                'ad_user_data': 'granted', // Enable ad user data
+                'ad_personalization': 'granted', // Enable personalized ads
+                'personalization_storage': 'granted'
+            });
+            
+            // Trigger a page_view event to immediately activate analytics
+            gtag('event', 'page_view', {
+                'send_to': 'G-KM0JNZ7JBC'
+            });
+            
+            // Request ads refresh if AdSense is loaded
+            if (window.adsbygoogle && window.adsbygoogle.loaded) {
+                console.log('AdSense ready - Ads will display on next ad slot');
+            }
+            
+            hideCookieBanner();
+            console.log('✅ Cookies accepted - Analytics and ads enabled immediately (no refresh needed)');
+        }
+
+        function declineCookies() {
+            // Don't save any cookie on decline - user will be asked again on next visit
+            // This ensures we ask for consent on every page load until user accepts
+            
+            // Ensure consent remains denied (no ads, no analytics) - IMMEDIATE UPDATE
+            gtag('consent', 'update', {
+                'analytics_storage': 'denied',
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied',
+                'personalization_storage': 'denied'
+            });
+            
+            // Clear any existing analytics cookies immediately
+            clearAnalyticsCookies();
+            
+            // Also clear any existing consent cookie
+            deleteCookie('cookieConsent');
+            
+            hideCookieBanner();
+            console.log('❌ Cookies declined - You will be asked again on next visit');
+        }
+
+        function clearAnalyticsCookies() {
+            // Clear Google Analytics cookies if they exist
+            const gaCookies = ['_ga', '_gat', '_gid', '_gat_gtag'];
+            gaCookies.forEach(cookie => {
+                deleteCookie(cookie);
+                // Also try to delete with domain prefix
+                document.cookie = cookie + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
+            });
+        }
+
+        function loadAnalytics() {
+            // GA is already loaded in head, just update consent dynamically
+            const consent = getCookie('cookieConsent');
+            if (consent === 'accepted') {
+                gtag('consent', 'update', {
+                    'analytics_storage': 'granted',
+                    'ad_storage': 'granted',
+                    'ad_user_data': 'granted',
+                    'ad_personalization': 'granted',
+                    'personalization_storage': 'granted'
+                });
+                // Send page_view event to activate tracking immediately
+                gtag('event', 'page_view', {
+                    'send_to': 'G-KM0JNZ7JBC'
+                });
+                console.log('✅ Google Analytics and AdSense enabled (from previous consent)');
+            }
+        }
+
+        function hideCookieBanner() {
+            const banner = document.getElementById('cookieConsent');
+            banner.classList.remove('show');
+        }
+
+        function showCookieBanner() {
+            const banner = document.getElementById('cookieConsent');
+            setTimeout(() => {
+                banner.classList.add('show');
+            }, 500); // Small delay before showing
+        }
+
+        // Check if user has already made a choice - Initialize consent state dynamically
+        window.addEventListener('DOMContentLoaded', () => {
+            const consent = getCookie('cookieConsent');
+            
+            if (!consent) {
+                // No saved consent - show banner (first visit or user declined previously)
+                showCookieBanner();
+                console.log('ℹ️ Cookie consent banner displayed - Waiting for user decision');
+            } else if (consent === 'accepted') {
+                // User previously accepted - update consent dynamically and load analytics immediately
+                gtag('consent', 'update', {
+                    'analytics_storage': 'granted',
+                    'ad_storage': 'granted',
+                    'ad_user_data': 'granted',
+                    'ad_personalization': 'granted',
+                    'personalization_storage': 'granted'
+                });
+                loadAnalytics();
+                console.log('✅ Returning user - Consent already accepted, analytics active');
+            }
+        });
+    </script>
 </body>
 </html>
 

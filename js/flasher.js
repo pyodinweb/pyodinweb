@@ -322,13 +322,16 @@ class OdinFlasher {
             
             // Reboot device if requested
             if (reboot) {
-                this.log("Rebooting device...");
+                this.log("Rebooting device (auto-reboot enabled)...");
                 try {
                     await this.downloadEngine.rebootDevice();
                     await sleep(1000);
                 } catch (error) {
                     // Device disconnects during reboot - this is normal
                 }
+            } else {
+                this.log("Skipping reboot (auto-reboot disabled)", 'warning');
+                this.log("Device is still in Download Mode - you can manually reboot it", 'info');
             }
             
             return true;
