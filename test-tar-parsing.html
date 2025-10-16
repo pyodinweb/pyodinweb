@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TAR Parsing Test</title>
+</head>
+<body>
+    <h1>TAR Parsing Test</h1>
+    <input type="file" id="tarfile" accept=".tar,.tar.md5">
+    <pre id="output"></pre>
+    
+    <script>
+        function log(msg) {
+            document.getElementById('output').textContent += msg + '\n';
+        }
+        
+        function readString(buffer, offset, maxLength) {
+            let str = '';
+            for (let i = 0; i < maxLength; i++) {
+                const byte = buffer[offset + i];
+                if (byte === 0) break;
+                str += String.fromCharCode(byte);
+            }
+            return str;
+        }
+        
+        function bytesToHex(bytes) {
+            return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        
+        document.getElementById('tarfile').onchange = async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            log(`Testing: ${file.name} (${file.size} bytes)\n`);
+            
+            // Check for .md5 - MD5 is at END, TAR at beginning
+            let tarStartOffset = 0;
+            let tarEndOffset = file.size;
+            
+            if (file.name.toLowerCase().endsWith('.md5')) {
+                log('=== Checking .md5 file format ===\n');
+                
+                // Read LAST 512 bytes (Samsung .md5 format has MD5 at end)
+                const tailChunk = file.slice(Math.max(0, file.size - 512), file.size);
+                const tailData = new Uint8Array(await tailChunk.arrayBuffer());
+                
+                log('Last 512 bytes of file:');
+                log(`  Hex: ${bytesToHex(tailData.slice(0, 64))}`);
+                log(`  ASCII: ${new TextDecoder().decode(tailData).replace(/[^\x20-\x7E]/g, '.')}`);
+                log('');
+                
+                // Look for MD5 pattern
+                const tailStr = new TextDecoder().decode(tailData);
+                const md5Match = tailStr.match(/([0-9a-fA-F]{32})\s+/);
+                
+                if (md5Match) {
+                    log(`✓ Found MD5 hash: ${md5Match[1]}`);
+                    
+                    // Find where MD5 line starts
+                    const md5LineIndex = tailStr.indexOf(md5Match[0]);
+                    tarEndOffset = file.size - (512 - md5LineIndex);
+                    log(`TAR ends at offset: ${tarEndOffset}\n`);
+                } else {
+                    log('✗ No MD5 hash found in tail\n');
+                }
+                
+                // TAR starts at beginning
+                tarStartOffset = 0;
+                log(`TAR starts at offset: ${tarStartOffset}`);
+                log(`TAR size: ${tarEndOffset - tarStartOffset} bytes\n`);
+                
+                // Verify TAR header at offset 0
+                const testHeaderBlob = file.slice(0, 512);
+                const testHeader = new Uint8Array(await testHeaderBlob.arrayBuffer());
+                const ustarCheck = readString(testHeader, 257, 5);
+                log(`TAR magic check at offset 0: "${ustarCheck}"`);
+                if (ustarCheck === 'ustar') {
+                    log('✓ Valid TAR header found at beginning!\n');
+                } else {
+                    log('✗ No valid TAR header at beginning!\n');
+                }
+            }
+            
+            // Read first TAR header
+            const headerBlob = file.slice(tarStartOffset, tarStartOffset + 512);
+            const header = new Uint8Array(await headerBlob.arrayBuffer());
+            
+            log('First TAR header:');
+            const filename = readString(header, 0, 100).trim();
+            const sizeStr = readString(header, 124, 12).trim();
+            const size = parseInt(sizeStr, 8);
+            
+            log(`  Filename: ${filename}`);
+            log(`  Size: ${size} bytes`);
+            log(`  Size (octal string): ${sizeStr}`);
+            log('');
+            
+            // Calculate where file data should be
+            const fileDataOffset = tarStartOffset + 512;
+            log(`File data should be at offset: ${fileDataOffset}\n`);
+            
+            // Read first 64 bytes of file data
+            const dataBlob = file.slice(fileDataOffset, fileDataOffset + 64);
+            const dataBytes = new Uint8Array(await dataBlob.arrayBuffer());
+            
+            log('First 64 bytes of file data:');
+            log(`  Hex: ${bytesToHex(dataBytes)}`);
+            log(`  ASCII: ${new TextDecoder().decode(dataBytes).substring(0, 64).replace(/[^\x20-\x7E]/g, '.')}`);
+            log('');
+            
+            // Check if it's actually a TAR header
+            const ustartCheck = readString(dataBytes, 257, 5);
+            if (ustartCheck === 'ustar') {
+                log('ERROR: This looks like a TAR header, not file data!');
+                log('The offset calculation is WRONG!');
+            } else {
+                log('OK: This does not appear to be a TAR header');
+                
+                // Check for GZIP signature
+                if (dataBytes[0] === 0x1F && dataBytes[1] === 0x8B) {
+                    log('✓ GZIP signature detected!');
+                }
+                // Check for LZ4 signature
+                else if (dataBytes[0] === 0x04 && dataBytes[1] === 0x22 && 
+                         dataBytes[2] === 0x4D && dataBytes[3] === 0x18) {
+                    log('✓ LZ4 signature detected!');
+                } else {
+                    log('? No compression signature detected (might be raw data)');
+                }
+            }
+        };
+    </script>
+</body>
+</html>
+

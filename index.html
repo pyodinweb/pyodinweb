@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyOdin Web - Samsung Firmware Flasher</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --dark-color: #343a40;
+            --light-color: #f8f9fa;
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40,167,69,0.3);
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .file-upload {
+            border: 2px dashed #ccc;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            background: #fafafa;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-color);
+            background: #f0f7ff;
+        }
+
+        .file-upload.active {
+            border-color: var(--primary-color);
+            background: #e3f2fd;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+        }
+
+        .device-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+
+        .status-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--danger-color);
+            box-shadow: 0 0 10px rgba(220,53,69,0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.connected {
+            background: var(--success-color);
+            box-shadow: 0 0 10px rgba(40,167,69,0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .device-info {
+            flex: 1;
+        }
+
+        .device-info h3 {
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .device-info p {
+            color: var(--secondary-color);
+            font-size: 0.9em;
+        }
+
+        .progress-container {
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), #667eea);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .progress-info {
+            margin-top: 10px;
+            color: var(--secondary-color);
+            font-size: 0.9em;
+        }
+
+        .log-container {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+        }
+
+        .log-entry.error {
+            color: #f48771;
+        }
+
+        .log-entry.success {
+            color: #89d185;
+        }
+
+        .log-entry.warning {
+            color: #f5d889;
+        }
+
+        .log-entry.info {
+            color: #569cd6;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-option label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .firmware-items {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+        }
+
+        .firmware-item {
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .firmware-item:last-child {
+            border-bottom: none;
+        }
+
+        .firmware-item-name {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .firmware-item-size {
+            color: var(--secondary-color);
+            font-size: 0.9em;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 PyOdin Web</h1>
+            <p>Samsung Firmware Flasher - Powered by WebUSB</p>
+        </div>
+
+        <div class="main-card">
+            <!-- WebUSB Support Check -->
+            <div id="webusb-warning" class="alert alert-danger hidden">
+                <strong>⚠️ WebUSB Not Supported</strong>
+                <p>Your browser doesn't support WebUSB API. Please use Chrome, Edge, or Opera (version 61+).</p>
+            </div>
+
+            <!-- Device Connection Section -->
+            <div class="section">
+                <h2 class="section-title">Device Connection</h2>
+                
+                <div class="device-status">
+                    <div class="status-indicator" id="status-indicator"></div>
+                    <div class="device-info">
+                        <h3 id="device-status-text">No Device Connected</h3>
+                        <p id="device-info-text">Put your Samsung device in Download Mode and click "Connect Device"</p>
+                    </div>
+                    <button class="btn btn-primary" id="connect-btn" onclick="connectDevice()">
+                        Connect Device
+                    </button>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>ℹ️ How to enter Download Mode:</strong>
+                    <p>1. Power off your device completely<br>
+                    2. Press and hold Volume Down + Bixby/Home + Power<br>
+                    3. When warning appears, press Volume Up to continue</p>
+                </div>
+            </div>
+
+            <!-- Firmware Selection Section -->
+            <div class="section">
+                <h2 class="section-title">Firmware Selection</h2>
+                
+                <div class="file-upload" id="file-upload-area" onclick="document.getElementById('firmware-file').click()">
+                    <input type="file" id="firmware-file" accept=".tar,.tar.md5,.tar.gz,.bin,.img" onchange="handleFirmwareSelect(event)" multiple="false">
+                    <div>
+                        <h3>📁 Select Firmware File</h3>
+                        <p>Supports: TAR, TAR.MD5, TAR.GZ, BIN, IMG</p>
+                        <p style="margin-top: 10px; color: var(--secondary-color); font-size: 0.9em;">
+                            Drag and drop or click to browse
+                        </p>
+                    </div>
+                </div>
+
+                <div id="firmware-info" class="hidden">
+                    <div class="file-info">
+                        <h4>Firmware Information</h4>
+                        <p><strong>File:</strong> <span id="firmware-name"></span></p>
+                        <p><strong>Size:</strong> <span id="firmware-size"></span></p>
+                        <p><strong>Type:</strong> <span id="firmware-type"></span></p>
+                        <p><strong>MD5:</strong> <span id="firmware-md5">Calculating...</span></p>
+                    </div>
+                    <div id="firmware-items-container" class="hidden">
+                        <h4 style="margin-top: 15px; margin-bottom: 10px;">Firmware Contents:</h4>
+                        <div class="firmware-items" id="firmware-items"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flash Options Section -->
+            <div class="section">
+                <h2 class="section-title">Flash Options</h2>
+                
+                <div class="options-grid">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="option-verify" checked>
+                        <label for="option-verify">Verify Firmware Hash</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="option-reboot" checked>
+                        <label for="option-reboot">Auto Reboot After Flash</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="option-verbose" checked>
+                        <label for="option-verbose">Verbose Logging</label>
+                    </div>
+                </div>
+
+                <div class="button-group" style="margin-top: 20px;">
+                    <button class="btn btn-success" id="flash-btn" onclick="startFlash()" disabled>
+                        Start Flashing
+                    </button>
+                    <button class="btn btn-danger" id="stop-btn" onclick="stopFlash()" disabled>
+                        Stop
+                    </button>
+                </div>
+
+                <div class="alert alert-warning" style="margin-top: 20px;">
+                    <strong>⚠️ Warning:</strong>
+                    <p>Flashing firmware can brick your device if done incorrectly. Ensure firmware matches your device model, device is charged >70%, and use a good USB cable.</p>
+                </div>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="section">
+                <h2 class="section-title">Progress</h2>
+                
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%">0%</div>
+                    </div>
+                    <div class="progress-info" id="progress-info">
+                        Ready to flash
+                    </div>
+                </div>
+            </div>
+
+            <!-- Log Section -->
+            <div class="section">
+                <h2 class="section-title">Activity Log</h2>
+                
+                <div class="log-container" id="log-container">
+                    <div class="log-entry info">PyOdin Web initialized - Ready to flash</div>
+                    <div class="log-entry info">WebUSB API detected - Device connection available</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>PyOdin Web - Made with ❤️ by the PyOdin Developers</p>
+            <p><a href="https://github.com/pyodin/pyodin" target="_blank">GitHub</a> | 
+               <a href="#" onclick="alert('See README for documentation'); return false;">Documentation</a> | 
+               Use at your own risk</p>
+        </div>
+    </div>
+
+    <!-- External Libraries -->
+    <!-- SparkMD5 for fast MD5 hashing -->
+    <script src="https://cdn.jsdelivr.net/npm/spark-md5@3.0.2/spark-md5.min.js"></script>
+    <!-- pako for GZIP decompression -->
+    <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+    <!-- LZ4 (browserified bundle with wrapper) -->
+    <script src="lz4.min.js"></script>
+    <script src="lz4-wrapper.js"></script>
+    <script src="js/lz4-streaming.js"></script>
+    
+    <!-- Core JavaScript Modules -->
+    <script src="js/constants.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/crypto-utils.js"></script>
+    <script src="js/usb-device.js"></script>
+    <script src="js/firmware-parser.js"></script>
+    <script src="js/pit-parser.js"></script>
+    <script src="js/download-engine.js"></script>
+    <script src="js/flasher.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+

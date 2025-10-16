@@ -1,0 +1,33 @@
+{
+  "name": "pyodin-web",
+  "version": "1.0.0",
+  "description": "Browser-based Samsung firmware flashing tool using WebUSB",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "serve": "http-server -p 8000 -c-1"
+  },
+  "keywords": [
+    "samsung",
+    "odin",
+    "firmware",
+    "webusb",
+    "flashing",
+    "android"
+  ],
+  "author": "PyOdin Developers",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pyodin/pyodin"
+  },
+  "bugs": {
+    "url": "https://github.com/pyodin/pyodin/issues"
+  },
+  "homepage": "https://github.com/pyodin/pyodin#readme"
+}
+

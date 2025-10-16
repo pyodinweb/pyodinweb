@@ -1,0 +1,76 @@
+PyOdin Web Diagnostics
+Checking loaded modules:
+
+✓ SparkMD5: function
+✓ pako: object<!DOCTYPE html>
+<html>
+<head>
+    <title>PyOdin Web Diagnostics</title>
+</head>
+<body>
+    <h1>PyOdin Web Diagnostics</h1>
+    <pre id="output"></pre>
+    
+    <!-- Load all scripts in same order as main app -->
+    <script src="https://cdn.jsdelivr.net/npm/spark-md5@3.0.2/spark-md5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+    <script src="lz4.min.js"></script>
+    <script src="lz4-wrapper.js"></script>
+    
+    <script src="js/constants.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/crypto-utils.js"></script>
+    <script src="js/usb-device.js"></script>
+    <script src="js/firmware-parser.js"></script>
+    <script src="js/pit-parser.js"></script>
+    <script src="js/download-engine.js"></script>
+    <script src="js/flasher.js"></script>
+    
+    <script>
+        const output = document.getElementById('output');
+        
+        function check(name, obj) {
+            const status = typeof obj !== 'undefined' ? '✓' : '✗';
+            const type = typeof obj;
+            output.textContent += `${status} ${name}: ${type}\n`;
+        }
+        
+        output.textContent = 'Checking loaded modules:\n\n';
+        
+        // External libraries
+        check('SparkMD5', SparkMD5);
+        check('pako', pako);
+        check('lz4', lz4);
+        output.textContent += '\n';
+        
+        // Constants
+        check('SAMSUNG_VENDOR_ID', SAMSUNG_VENDOR_ID);
+        check('OdinCommand', OdinCommand);
+        output.textContent += '\n';
+        
+        // Classes
+        check('DeviceInfo', DeviceInfo);
+        check('UsbDevice', UsbDevice);
+        check('FirmwareItem', FirmwareItem);
+        check('FirmwareData', FirmwareData);
+        check('FirmwareParser', FirmwareParser);
+        check('PitEntry', PitEntry);
+        check('PitData', PitData);
+        check('PitParser', PitParser);
+        check('DownloadProgress', DownloadProgress);
+        check('DownloadEngine', DownloadEngine);
+        check('OdinFlasher', OdinFlasher);
+        output.textContent += '\n';
+        
+        // Try to instantiate
+        try {
+            const flasher = new OdinFlasher(true);
+            output.textContent += '✓ OdinFlasher instantiated successfully!\n';
+        } catch (error) {
+            output.textContent += `✗ Failed to instantiate OdinFlasher: ${error.message}\n`;
+            output.textContent += `  Stack: ${error.stack}\n`;
+        }
+    </script>
+</body>
+</html>
+
