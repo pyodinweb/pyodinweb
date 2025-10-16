@@ -372,18 +372,15 @@ All operations are logged to both the UI and the browser console.
 ### Official Documentation
 
 - [WebUSB Specification](https://wicg.github.io/webusb/)
-- [WebUSB Explainer](https://github.com/WICG/webusb/blob/main/EXPLAINER.md)
 
 ### Firmware Sources
 
-- [SamMobile](https://www.sammobile.com/firmwares/) - Official Samsung firmware
+- [SamMobile](https://www.samfw.com) - Official Samsung firmware
 - [XDA Forums](https://forum.xda-developers.com/) - Custom ROMs and firmware
 
 ### Related Projects
 
-- [PyOdin](https://github.com/pyodin/pyodin) - Original Python implementation
-- [Heimdall](https://github.com/Benjamin-Dobell/Heimdall) - Cross-platform Odin alternative
-- [JOdin3](https://forum.xda-developers.com/t/jodin3.1710416/) - Java-based Odin
+- [PyOdin](https://github.com/completelynullvalue/Samsung-OpenSource-Odin) - Original Python implementation
 
 ## 🤝 Contributing
 
@@ -430,14 +427,6 @@ This project is licensed under the MIT License. See LICENSE file for details.
 - Chrome team for WebUSB API
 - PyOdin developers for the original implementation
 - Open-source firmware community
-
-## 📞 Support
-
-For issues, questions, or contributions:
-
-- **GitHub Issues**: [Report a bug](https://github.com/pyodin/pyodin/issues)
-- **XDA Forums**: [Discussion thread]
-- **Documentation**: [Wiki](https://github.com/pyodin/pyodin/wiki)
 
 ---
 
