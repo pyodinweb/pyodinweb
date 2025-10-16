@@ -375,7 +375,7 @@ All operations are logged to both the UI and the browser console.
 
 ### Firmware Sources
 
-- [SamMobile](https://www.samfw.com) - Official Samsung firmware
+- [SamFW](https://www.samfw.com) - Official Samsung firmware
 - [XDA Forums](https://forum.xda-developers.com/) - Custom ROMs and firmware
 
 ### Related Projects
