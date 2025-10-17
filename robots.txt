@@ -1,0 +1,92 @@
+# robots.txt for PyOdin Web - Samsung Firmware Flasher
+# Generated based on Google's robots.txt specifications
+# https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt
+
+# Global rules for all crawlers
+User-agent: *
+
+# Allow access to main application and key files
+Allow: /
+Allow: /index.html
+Allow: /manifest.json
+
+# Block sensitive or unnecessary files for web crawlers
+Disallow: /js/
+Disallow: /*.js$
+Disallow: /*.json$
+Disallow: /*.md$
+Disallow: /package.json
+Disallow: /test-*
+Disallow: /diagnostic.html
+
+# Block common development/system files
+Disallow: /.git/
+Disallow: /.gitignore
+Disallow: /node_modules/
+Disallow: /.env
+Disallow: /.htaccess
+Disallow: /composer.json
+Disallow: /composer.lock
+
+# Block temporary and cache files
+Disallow: /tmp/
+Disallow: /temp/
+Disallow: /cache/
+Disallow: /*.tmp$
+Disallow: /*.cache$
+Disallow: /*.bak$
+
+# Block admin and private areas (if any)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /config/
+
+# Allow specific useful files for SEO
+Allow: /manifest.json
+
+# Specific rules for major search engines
+
+# Google
+User-agent: Googlebot
+Allow: /
+Disallow: /js/
+Disallow: /diagnostic.html
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /js/
+Disallow: /diagnostic.html
+
+# Social media crawlers - allow for better sharing
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Block bad bots and scrapers
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Crawl delay (optional - uncomment if needed)
+# Crawl-delay: 1
+
+# Sitemap location (update with your actual domain)
+Sitemap: https://pyodin.web/sitemap.xml
+
+# Note: This robots.txt is designed for a web application
+# that doesn't need extensive crawling of JavaScript files
+# but should be discoverable for the main HTML content

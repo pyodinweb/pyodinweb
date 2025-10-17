@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -648,7 +648,7 @@
                     3. When warning appears, press Volume Up to continue</p>
                 </div>
 
-                <div class="alert alert-warning" style="cursor: pointer;" onclick="const c=document.getElementById('windows-note-content');const h=c.style.display==='none';c.style.display=h?'block':'none';this.querySelector('strong').textContent=h?'🪟 Windows Users - Click to collapse':'🪟 Windows Users - Click to expand';" id="windows-alert">
+                <div class="alert alert-warning" style="cursor: pointer;" onclick="toggleWindowsNote()" id="windows-alert">
                     <strong>🪟 Windows Users - Click to expand</strong>
                     <div id="windows-note-content" style="display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #856404;">
                         <p><strong>Important:</strong> On Windows, you need to install the WinUSB driver for your Samsung device using Zadig:</p>
