@@ -747,6 +747,21 @@
                     2. Press and hold Volume Down + Bixby/Home + Power<br>
                     3. When warning appears, press Volume Up to continue</p>
                 </div>
+
+                <div class="alert alert-warning" style="cursor: pointer;" onclick="toggleWindowsNote()" id="windows-alert">
+                    <strong>🪟 Windows Users - Click to expand</strong>
+                    <div id="windows-note-content" style="display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #856404;">
+                        <p><strong>Important:</strong> On Windows, you need to install the WinUSB driver for your Samsung device using Zadig:</p>
+                        <p>1. Download <a href="https://zadig.akeo.ie/" target="_blank" style="color: #856404; text-decoration: underline;">Zadig</a><br>
+                        2. Put your Samsung device in Download Mode<br>
+                        3. Open Zadig and select your Samsung device from the list<br>
+                        4. Select "WinUSB" from the driver dropdown<br>
+                        5. Click "Replace Driver" or "Install Driver"<br>
+                        6. Wait for the installation to complete<br>
+                        7. Refresh this page and try connecting again</p>
+                        <p style="font-size: 0.9em; opacity: 0.9;">⚠️ This will replace the existing Samsung driver with WinUSB, which is required for WebUSB to work.</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Firmware Selection Section -->
